@@ -41,5 +41,7 @@ body {
   }
 
   .button:hover {
-    background-color: #3e8e41;
+    color: black;
+    background-color: white;
+    border: solid black;
   }
