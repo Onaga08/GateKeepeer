@@ -1,37 +1,27 @@
-import express, { Request, Response } from 'express';
-import config from './config';
+import express from 'express';
+import cors from "cors";
+import dataRouter from "./data/data.routes"
+// import residentRouter from "./resident/resident.routes"
+// import adminRouter from "./admin/admin.routes"
+// import securityRouter from "./security/security.routes"
 
 const app = express();
 
-app.get('/healthcheck', (req, res) => {
-    const healthcheck = {
-      uptime: process.uptime(),
-      message: 'OK',
-      timestamp: Date.now(),
-    };
-    try {
-      return res.json(healthcheck);
-    } catch (e) {
-      return res.status(503).send();
-    }
-  });
+  app.use(cors());
+
+  app.use(express.json());
 
 app.get('/', (req, res) => {
-    try {
-      return res.json({project:"GateKeeper"});
-    } catch (e) {
-      return res.status(503).send();
-    }
-  });
-app
-    .listen(config.port, () => {
-      console.log(`
-      ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️
-      ################################################
-    `);
-    })
-    .on('error', err => {
-      console.error(err);
-      process.exit(1);
-    });
+  res.send('GateKeeper Server Running...');
+});
+app.use("/data", dataRouter);
+// app.use("/resident", residentRouter);
+// app.use('/security', securityRouter);
+// app.use('/admin', adminRouter);
+
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
